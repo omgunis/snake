@@ -14,6 +14,7 @@ $(function(){
   var direction2;
   var update;
   var eatean = [];
+  var snakeArray;
   var player1;
   var player2;
   var twoPlayer = false;
@@ -66,6 +67,14 @@ $(function(){
   }
 
   function createPlayer1(){
+    var length = 5;
+    snakeArray = [];
+    for (var i = length-1; i >=0; i--){
+      snakeArray.push({
+        x: i,
+        y: 0
+      });
+    }
     player1  = {
       x: 450, //x start pos
       y: 250, //y start pos
@@ -93,14 +102,15 @@ $(function(){
     //draw player 1
     ctx.fillStyle = player1.color;
     rect(player1.x, player1.y, 10,10);
-
+    player1.x = snakeArray[0].x;
+    player1.y = snakeArray[0].y;
     //draw player 2
     if(twoPlayer == true){
       ctx.fillStyle = player2.color;
       rect(player2.x, player2.y, 10,10);
     }
 
-    //game over
+    //game over if border is touched
     if (player1.x > w - 10 || player1.x < 1 || player1.y > h - 10 || player1.y < 1){
       console.log("DEAD");
       clearInterval(update); //stops animation
@@ -191,7 +201,15 @@ $(function(){
       p1score += 1;
       document.getElementById("scorePlayer1").innerHTML = p1score;
       console.log('touch');
+      var tail = {x: player1.x, y: player1.y};
     }
+    else {
+      var tail = snakeArray.pop();
+      tail.x = player1.x;
+      tail.y = player1.y;
+    }
+    //player can now eat food
+
     if(twoPlayer ==true){
       if(player2.x <= food.x + 10 && player2.x >= food.x - 10&&
          player2.y <= food.y + 10 && player2.y >= food.y - 10){
@@ -200,6 +218,13 @@ $(function(){
         document.getElementById("scorePlayer2").innerHTML = p2score;
         console.log('touch');
       }
+    }
+
+    snakeArray.unshift(tail);
+
+    for (var i=0; i<snakeArray.length; i++){
+      var c = snakeArray[i];
+      ctx.fillStyle = 'blue';
     }
 
   }

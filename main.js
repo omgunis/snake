@@ -10,10 +10,13 @@ $(function(){
   var p1score = 0;
   var p2score = 0;
   var speed = 3;
-  var direction;
+  var direction1;
+  var direction2;
   var update;
   var eatean = [];
-  var player;
+  var player1;
+  var player2;
+  var twoPlayer = false;
   var food;
 
 
@@ -21,21 +24,40 @@ $(function(){
     ctx.font = "30px Arial";
     ctx.fillStyle = "red";
     ctx.fillText("SNAKE",10,50);
+    var singlePlayer = document.querySelector("#singlePlayer");
+    singlePlayer.addEventListener('click', function(){
+      twoPlayer = false;
+      singlePlayerinit();
+    });
+    twoPlayer = document.querySelector("#twoPlayer");
+    twoPlayer.addEventListener('click', function(){
+      twoPlayer = true;
+      twoPlayerinit();
+    });
   }
   start();
 
-  function init() {
+  function singlePlayerinit() {
     clear();
-    createPlayer();
+    createPlayer1();
     createFood();
-    direction = 'up';
-    score = 0;
+    direction1 = 'up';
+    p1score = 0;
+    p2score = 0;
     return update = setInterval(draw, 1000/FPS);//updates screen every 10 milliseconds creating illusion of movement
   }
-  // function initFood() {
-  //    eaten = 0;
-  //    food = new Array(eaten);
-  // }
+  function twoPlayerinit() {
+    clear();
+    createPlayer1();
+    createPlayer2();
+    createFood();
+    direction1 = 'up';
+    direction2 = 'up';
+    p1score = 0;
+    p2score = 0;
+    return update = setInterval(draw, 1000/FPS);//updates screen every 10 milliseconds creating illusion of movement
+  }
+
   function rect(x,y,w,h) {
     ctx.beginPath();
     ctx.rect(x,y,w,h);
@@ -43,11 +65,18 @@ $(function(){
     ctx.fill();
   }
 
-  function createPlayer(){
-    player  = {
+  function createPlayer1(){
+    player1  = {
       x: 450, //x start pos
       y: 250, //y start pos
       color: 'tomato'
+    };
+  }
+  function createPlayer2(){
+    player2  = {
+      x: 50, //x start pos
+      y: 250, //y start pos
+      color: 'blue'
     };
   }
 
@@ -61,59 +90,116 @@ $(function(){
 
   function draw(){
     clear();
-    //draw player
-    ctx.fillStyle = player.color;
-    rect(player.x, player.y, 10,10);
+    //draw player 1
+    ctx.fillStyle = player1.color;
+    rect(player1.x, player1.y, 10,10);
+
+    //draw player 2
+    if(twoPlayer == true){
+      ctx.fillStyle = player2.color;
+      rect(player2.x, player2.y, 10,10);
+    }
 
     //game over
-    if (player.x > w - 10 || player.x < 1 || player.y > h - 10 || player.y < 1){
+    if (player1.x > w - 10 || player1.x < 1 || player1.y > h - 10 || player1.y < 1){
       console.log("DEAD");
       clearInterval(update); //stops animation
-      //alert('Play Again?');
+      alert('BLUE WINS!');
+    }
+    if(twoPlayer ==true){
+      if (player2.x > w - 10 || player2.x < 1 || player2.y > h - 10 || player2.y < 1){
+        console.log("DEAD");
+        clearInterval(update); //stops animation
+        alert('RED WINS!');
+      }
     }
 
-    //player movement
-    if (direction == 'left') {
-      player.x -= speed;
+    //player 1 movement
+    if (direction1 == 'left') {
+      player1.x -= speed;
     }
-    if (direction == 'up') {
-      player.y -= speed;
+    if (direction1 == 'up') {
+      player1.y -= speed;
     }
-    if (direction == 'right') {
-      player.x += speed;
+    if (direction1 == 'right') {
+      player1.x += speed;
     }
-    if (direction === 'down') {
-      player.y += speed;
+    if (direction1 === 'down') {
+      player1.y += speed;
     }
 
-    //gets keyboard input
+    //player 2 movement
+    if (twoPlayer == true){
+      if (direction2 == 'left') {
+        player2.x -= speed;
+      }
+      if (direction2 == 'up') {
+        player2.y -= speed;
+      }
+      if (direction2 == 'right') {
+        player2.x += speed;
+      }
+      if (direction2 === 'down') {
+        player2.y += speed;
+      }
+    }
+
+    //gets player 1 keyboard input
     $(document).keydown(function(evt) {
       if (evt.keyCode == 37){
-        direction = 'left';
+        direction1 = 'left';
       }
       else if (evt.keyCode == 38){
-        direction = 'up';
+        direction1 = 'up';
       }
       else if (evt.keyCode == 39){
-        direction = 'right';
+        direction1 = 'right';
 
       }
       else if (evt.keyCode == 40){
-        direction = 'down';
+        direction1 = 'down';
       }
     });
+
+    //gets player 2 keyboard input
+    if(twoPlayer == true){
+      $(document).keydown(function(evt) {
+        if (evt.keyCode == 65){
+          direction2 = 'left';
+        }
+        else if (evt.keyCode == 87){
+          direction2 = 'up';
+        }
+        else if (evt.keyCode == 68){
+          direction2 = 'right';
+
+        }
+        else if (evt.keyCode == 83){
+          direction2 = 'down';
+        }
+      });
+    }
 
     //draw food
     ctx.fillStyle = "rgb(255, 255, 102)";
     rect(food.x, food.y, 10, 10);
 
     //clear food if touching player
-    if(player.x <= food.x + 10 && player.x >= food.x - 10&&
-       player.y <= food.y + 10 && player.y >= food.y - 10){
+    if(player1.x <= food.x + 10 && player1.x >= food.x - 10&&
+       player1.y <= food.y + 10 && player1.y >= food.y - 10){
       createFood();
-      score += 1;
-      document.getElementById("scorePlayer1").innerHTML = score;
+      p1score += 1;
+      document.getElementById("scorePlayer1").innerHTML = p1score;
       console.log('touch');
+    }
+    if(twoPlayer ==true){
+      if(player2.x <= food.x + 10 && player2.x >= food.x - 10&&
+         player2.y <= food.y + 10 && player2.y >= food.y - 10){
+        createFood();
+        p2score += 1;
+        document.getElementById("scorePlayer2").innerHTML = p2score;
+        console.log('touch');
+      }
     }
 
   }
@@ -121,5 +207,5 @@ $(function(){
     ctx.clearRect(0,0, w, h);
   }
   //start();
-  init();
+  //init();
 }) //end of iffe

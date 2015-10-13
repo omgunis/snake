@@ -1,0 +1,21 @@
+canvas {
+  background-color: lightblue;
+}
+
+#scorePlayer1 {
+  color: tomato;
+  font-size: 24px;
+  font-weight: bold;
+  display: inline-block;
+  padding-right: 140px;
+  padding-left: 140px;
+}
+
+#scorePlayer2 {
+  color: #0033CC;
+  font-size: 24px;
+  font-weight: bold;
+  display: inline-block;
+  padding-right: 140px;
+  padding-left: 140px;
+}

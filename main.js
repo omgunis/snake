@@ -3,62 +3,25 @@ $(function(){
   var ctx = canvas.getContext("2d");
   var w = canvas.width;
   var h = canvas.height;
-  var player = canvas.getContext("2d");
-  var FPS = 10; //snakeArray moves every update, not speed
+  var FPS = 100; //snakeArray moves every update, not speed
+  var speed = 1; //if speed is more than one, spaces are created between snakeArray
   var p1score = 0;
   var p2score = 0;
-  var speed = 1; //if speed is more than one, spaces are created between snakeArray
+  var twoPlayer = false;
   var direction1 = 'up';
   var direction2;
   var update;
   var snakeArray; //array of cells that make the snake
-  var twoPlayer = false;
   var food;
 
-  //var head = new SnakePiece(450, 250, 'tomato');
-  //var tail = new SnakePiece(450, 260, 'lime');
-
+  //used to make food
  function Asset (xPos, yPos, playerColor) {
-   this.x = xPos;
-   this.y = yPos;
-   this.color = playerColor;
- }
-
- function SnakePiece (xPos, yPos, color, heading) {
    this.x = xPos;
    this.y = yPos;
    this.height = 10;
    this.width = 10;
-   this.color = color;
-   this.heading = heading || "up";
-   // this.speed = speed;
-   this.draw = function(){
-     console.log(this.heading);
-
-     //player 1 movement
-     if (direction1 == 'left') {
-       this.heading = 'left';
-       this.x -= speed;
-     }
-     else if (direction1 == 'up') {
-       this.heading = 'up';
-       this.y -= speed;
-     }
-     else if (direction1 == 'right') {
-       this.heading = 'right';
-       this.x += speed;
-     }
-     else if (direction1 == 'down') {
-       this.heading = 'down';
-       this.y += speed;
-     }
-     ctx.fillStyle = this.color;
-     rect(this.x, this.y, this.height, this.width);
-   }
+   this.color = playerColor;
  }
-
-  var player1 = new SnakePiece(420, 250, 'tomato');
-  //var player2 = new SnakePiece(100, 100, 'blue');
 
   function start(){
     ctx.font = "30px Arial";
@@ -75,30 +38,26 @@ $(function(){
       twoPlayerinit();
     });
   }
-
   start();
-
-  //create_snake();
-
-  function create_snake(){
-    var length = 10; //initial length of snake
+  function create_snake1(){
+    var length = 5; //initial length of snake
     snakeArray = []; //start with empty array
     for (var i=0; i <= length; i++){
       //creates a vertical snake moving up
       snakeArray.push({x:50, y:i+25});
     }
   }
-
+  //runs if single player is selected in start
   function singlePlayerinit() {
     clear();
-    create_snake();
+    create_snake1();
     createFood();
     direction1 = 'up';
     p1score = 0;
     p2score = 0;
     return update = setInterval(draw, FPS);//updates screen every 10 milliseconds creating illusion of movement
   }
-
+  //runs if two player is selected in start
   function twoPlayerinit() {
     clear();
     createFood();
@@ -108,14 +67,14 @@ $(function(){
     p2score = 0;
     return update = setInterval(draw, 1000/FPS);//updates screen every 10 milliseconds creating illusion of movement
   }
-
+  //Creates rectangles
   function rect(x,y,w,h) {
     ctx.beginPath();
     ctx.rect(x,y,w,h);
     ctx.closePath();
     ctx.fill();
   }
-
+  //creates food
   function createFood(){
     food  = {
       x: Math.round(Math.random() * 590), //random x position for food
@@ -123,38 +82,6 @@ $(function(){
       color: "rgb(255, 255, 102)"
     };
   }
-
-  function paint(){
-      ctx.clearRect(0,0, w, h);
-    //clears canvas every update
-    //creates body
-    for (var i=0; i < snakeArray.length; i++){
-      var c = snakeArray[i];
-      ctx.fillStyle = 'tomato';
-      rect(c.x*10, c.y*10, 10, 10);
-    }
-
-    var nx = snakeArray[0].x;
-    var ny = snakeArray[0].y;
-
-    if (direction1 == 'left') {
-      nx-=speed;
-    }
-    else if (direction1 == 'up') {
-      ny-=speed;
-    }
-    else if (direction1 == 'right') {
-      nx+=speed;
-    }
-    else if (direction1 == 'down') {
-      ny+=speed;
-    }
-    var tail = snakeArray.pop(); //pops out last cell
-    tail.x = nx;
-    tail.y = ny;
-    snakeArray.unshift(tail); //puts cell back in the front
-  }
-  //paint();
   //paints the canvas lightblue
   //called at every update frame
   function clear(){
@@ -164,8 +91,8 @@ $(function(){
   function draw(){
     clear();
     ctx.clearRect(0,0, w, h);
-    //clears canvas every update
-    //creates body
+
+    //draws player 1
     for (var i=0; i < snakeArray.length; i++){
       var c = snakeArray[i];
       ctx.fillStyle = 'tomato';
@@ -175,6 +102,7 @@ $(function(){
     var nx = snakeArray[0].x;
     var ny = snakeArray[0].y;
 
+    //snake direction
     if (direction1 == 'left') {
       nx-=speed;
     }
@@ -187,31 +115,15 @@ $(function(){
     else if (direction1 == 'down') {
       ny+=speed;
     }
+    //x and y positions are updated every frame, but cells are not//
     var tail = snakeArray.pop(); //pops out last cell
     tail.x = nx;
     tail.y = ny;
     snakeArray.unshift(tail); //puts cell back in the front
-
-    //draw player 1
-    ctx.fillStyle = player1.color;
-    rect(player1.x, player1.y, 10,10);
-
-    //player 1 movement
-    if (direction1 == 'left') {
-      player1.x -= speed;
-    }
-    else if (direction1 == 'up') {
-      player1.y -= speed;
-    }
-    else if (direction1 == 'right') {
-      player1.x += speed;
-    }
-    else if (direction1 == 'down') {
-      player1.y += speed;
-    }
+    //tail becomes new head every frame
 
     //game over if border is touched
-    if (player1.x > w - 10 || player1.x < 1 || player1.y > h - 10 || player1.y < 1){
+    if (nx > w || nx < 0 || ny > h || ny < 0){
       console.log("DEAD");
       clearInterval(update); //stops animation
       alert('BLUE WINS!');
@@ -222,8 +134,8 @@ $(function(){
     rect(food.x, food.y, 10, 10);
 
     //clear food if touching player
-    if(player1.x <= food.x + 10 && player1.x >= food.x - 10&&
-       player1.y <= food.y + 10 && player1.y >= food.y - 10){
+    if(nx <= food.x + 10 && nx >= food.x - 10&&
+       ny<= food.y + 10 && ny >= food.y - 10){
       createFood();
       p1score += 1;
       document.getElementById("scorePlayer1").innerHTML = p1score;
@@ -272,6 +184,7 @@ $(function(){
       }
     }
   }
+
   //player 1 keyboard input
   $(document).keydown(function(evt) {
     if (evt.keyCode == 37){
@@ -308,6 +221,4 @@ $(function(){
       }
     });
   }
-
-  //game_loop = setInterval(paint, 60);
 }) //end of iffe

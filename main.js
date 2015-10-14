@@ -8,20 +8,12 @@ $(function(){
   var p1score = 0;
   var p2score = 0;
   var twoPlayer = false;
-  var direction1 = 'up';
-  var direction2;
+  var direction1;//default direction
+  var direction2 = 'down';
   var update;
   var snakeArray; //array of cells that make the snake
+  var snakeArray2;
   var food;
-
-  //used to make food
- function Asset (xPos, yPos, playerColor) {
-   this.x = xPos;
-   this.y = yPos;
-   this.height = 10;
-   this.width = 10;
-   this.color = playerColor;
- }
 
   function start(){
     ctx.font = "30px Arial";
@@ -45,6 +37,15 @@ $(function(){
     for (var i=0; i <= length; i++){
       //creates a vertical snake moving up
       snakeArray.push({x:50, y:i+25});
+    }
+  }
+
+  function create_snake2(){
+    var length = 5; //initial length of snake
+    snakeArray2 = []; //start with empty array
+    for (var i=length-1; i >= 0 ; i--){
+      //creates a vertical snake moving down
+      snakeArray2.push({x:20, y:i+10});
     }
   }
   //runs if single player is selected in start
@@ -77,8 +78,8 @@ $(function(){
   //creates food
   function createFood(){
     food  = {
-      x: Math.round(Math.random() * 590), //random x position for food
-      y: Math.round(Math.random() * 390),
+      x: Math.round((Math.random() * w)/10) * 10, //random x position for food
+      y: Math.round((Math.random() * h)/10) * 10,
       color: "rgb(255, 255, 102)"
     };
   }
@@ -115,32 +116,34 @@ $(function(){
     else if (direction1 == 'down') {
       ny+=speed;
     }
-    //x and y positions are updated every frame, but cells are not//
-    var tail = snakeArray.pop(); //pops out last cell
-    tail.x = nx;
-    tail.y = ny;
-    snakeArray.unshift(tail); //puts cell back in the front
-    //tail becomes new head every frame
 
     //game over if border is touched
-    if (nx > w || nx < 0 || ny > h || ny < 0){
+    //freakin weird.... had to divide width and height by ten...
+    if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0){
       console.log("DEAD");
       clearInterval(update); //stops animation
       alert('BLUE WINS!');
     }
 
     //draw food
-    ctx.fillStyle = "rgb(255, 255, 102)";
+    ctx.fillStyle = "yellow";
     rect(food.x, food.y, 10, 10);
 
     //clear food if touching player
-    if(nx <= food.x + 10 && nx >= food.x - 10&&
-       ny<= food.y + 10 && ny >= food.y - 10){
+    //also had to divide food position by 10...
+    if(nx == food.x/10 && ny == food.y/10){
       createFood();
       p1score += 1;
       document.getElementById("scorePlayer1").innerHTML = p1score;
       console.log('touch');
     }
+
+    //x and y positions are updated every frame, but cells are not//
+    var tail = snakeArray.pop(); //pops out last cell
+    tail.x = nx;
+    tail.y = ny;
+    snakeArray.unshift(tail); //puts cell back in the front
+    //tail becomes new head every frame
 
     //player 2 draw
     if(twoPlayer == true){
@@ -187,18 +190,16 @@ $(function(){
 
   //player 1 keyboard input
   $(document).keydown(function(evt) {
-    if (evt.keyCode == 37){
+    if (evt.keyCode == 37 && direction1 != 'right'){
       direction1 = 'left';
     }
-    else if (evt.keyCode == 38){
+    else if (evt.keyCode == 38 && direction1 != 'down'){
       direction1 = 'up';
-
     }
-    else if (evt.keyCode == 39){
+    else if (evt.keyCode == 39 && direction1 != 'left'){
       direction1 = 'right';
-
     }
-    else if (evt.keyCode == 40){
+    else if (evt.keyCode == 40 && direction1 != 'up'){
       direction1 = 'down';
     }
   });

@@ -83,6 +83,16 @@ $(function(){
       color: "rgb(255, 255, 102)"
     };
   }
+
+  function checkCollision(x, y, array){
+    for(var i=0; i < array.length; i++){
+      if(array[i].x == x && array[i].y == y){
+        console.log('collision');
+        return true;
+      }
+    }
+    return false;
+  }
   //paints the canvas lightblue
   //called at every update frame
   function clear(){
@@ -119,7 +129,7 @@ $(function(){
 
     //game over if border is touched
     //freakin weird.... had to divide width and height by ten...
-    if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0){
+    if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0 || checkCollision(nx, ny, snakeArray)){
       console.log("DEAD");
       clearInterval(update); //stops animation
       alert('BLUE WINS!');
@@ -132,16 +142,23 @@ $(function(){
     //clear food if touching player
     //also had to divide food position by 10...
     if(nx == food.x/10 && ny == food.y/10){
+      var tail = {
+        x: nx,
+        y: ny
+      }
       createFood();
       p1score += 1;
       document.getElementById("scorePlayer1").innerHTML = p1score;
       console.log('touch');
     }
+    else {
+      //x and y positions are updated every frame, but cells are not//
+      var tail = snakeArray.pop(); //pops out last cell
+      tail.x = nx;
+      tail.y = ny;
+    }
 
-    //x and y positions are updated every frame, but cells are not//
-    var tail = snakeArray.pop(); //pops out last cell
-    tail.x = nx;
-    tail.y = ny;
+
     snakeArray.unshift(tail); //puts cell back in the front
     //tail becomes new head every frame
 

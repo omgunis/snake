@@ -16,7 +16,6 @@ $(function(){
   var snakeArray2;
   var food;
 
-
   function menu(){
     var textPos = 0;
     var animText = setInterval(textAnim, 60);
@@ -52,8 +51,13 @@ $(function(){
     }
 
     //initiates single or two player onClick
+    ctx.font = "800 30px Arial";
+    ctx.fillStyle = "tomato";
+    ctx.fillText("SNAKE",250,textPos);
+
     canvas.addEventListener('click', function(evt){
-      if(evt.x > 190 && evt.x < 300 && evt.y > 180 && evt.y < 215){
+      if(evt.x > 190 && evt.x < 300 && evt.y > 180 && evt.y < 215 ||
+        evt.x > 250 && evt.x < 330 && evt.y > 210 && evt.y < 230 ){
         twoPlayer = false;
         singlePlayerinit();
         clearInterval(animText);
@@ -110,7 +114,7 @@ $(function(){
     snakeArray2 = []; //start with empty array
     for (var i=length; i >= 0 ; i--){
       //creates a vertical snake moving down
-      snakeArray2.push({x:20, y:i+10});
+      snakeArray2.push({x:10, y:i+10});
     }
   }
   //Creates rectangles
@@ -146,7 +150,11 @@ $(function(){
   function gameOver(){
     ctx.font = "800 30px Arial";
     ctx.fillStyle = "tomato";
-    ctx.fillText("GAME OVER",220,150);
+    ctx.fillText("GAME OVER",210,200);
+
+    ctx.font = "300 15px Arial";
+    ctx.fillStyle = "tomato";
+    ctx.fillText("Play Again",260,220);
   }
   function draw(){
     clear();

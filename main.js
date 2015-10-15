@@ -183,6 +183,9 @@ $(function(){
         x: nx,
         y: ny
       }
+      if(twoPlayer == true){
+        snakeArray2.pop();
+      }
       createFood();
       score += 1;
       document.getElementById("score").innerHTML = score;
@@ -223,7 +226,8 @@ $(function(){
       }
 
       //player2 collision
-      if (nx2 >= w/10 || nx2 < 0 || ny2 >= h/10 || ny2 < 0 || checkCollision(nx2, ny2, snakeArray2)){
+      if (nx2 >= w/10 || nx2 < 0 || ny2 >= h/10 || ny2 < 0 ||
+        checkCollision(nx2, ny2, snakeArray2 || snakeArray2 == "undefined")){
         console.log("DEAD");
         clearInterval(update); //stops animation
         alert("RED WINS!");
@@ -236,6 +240,7 @@ $(function(){
           x: nx2,
           y: ny2
         }
+        snakeArray.pop();
         createFood();
         console.log('touch');
       }

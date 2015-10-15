@@ -19,32 +19,32 @@ $(function(){
     var textPos = 0;
     var animText = setInterval(textAnim, 60);
       //sexy SNAKE animation
-      function textAnim(){
-        clear();
-        textPos += 10;
-        if(textPos > 160){
-          clearInterval(animText);
-        }
-        ctx.font = "800 30px Arial";
-        ctx.fillStyle = "tomato";
-        ctx.fillText("SNAKE",250,textPos);
-
-        //player 1 temp box
-        ctx.fillStyle = "lightblue";
-        var single =  new rect(200, 180, 100,25);
-
-        ctx.font = "300 15px Arial";
-        ctx.fillStyle = "tomato";
-        ctx.fillText("Single Player", 205, 200);
-
-        //player 2 temp box
-        ctx.fillStyle = "lightblue";
-        var double =  new rect(310, 180, 100,25);
-
-        ctx.font = "300 15px Arial";
-        ctx.fillStyle = "#3366FF";
-        ctx.fillText("Two Player", 315, 200);
+    function textAnim(){
+      clear();
+      textPos += 10;
+      if(textPos > 160){
+        clearInterval(animText);
       }
+      ctx.font = "800 30px Arial";
+      ctx.fillStyle = "tomato";
+      ctx.fillText("SNAKE",250,textPos);
+
+      //player 1 temp box
+      ctx.fillStyle = "lightblue";
+      var single =  new rect(200, 180, 100,25);
+
+      ctx.font = "300 15px Arial";
+      ctx.fillStyle = "tomato";
+      ctx.fillText("Single Player", 205, 200);
+
+      //player 2 temp box
+      ctx.fillStyle = "lightblue";
+      var double =  new rect(310, 180, 100,25);
+
+      ctx.font = "300 15px Arial";
+      ctx.fillStyle = "#3366FF";
+      ctx.fillText("Two Player", 315, 200);
+    }
 
     //initiates single or two player onClick
     canvas.addEventListener('click', function(evt){
@@ -70,6 +70,7 @@ $(function(){
     createFood();
     direction1 = 'up';
     score = 0;
+    document.getElementById("score").style.visibility = "visible";
     return update = setInterval(draw, FPS);
   }
   //runs if two player is selected in start
@@ -80,6 +81,7 @@ $(function(){
     createFood();
     direction1 = 'up';
     direction2 = 'down';
+    document.getElementById("score").style.visibility = "hidden";
     return update = setInterval(draw, FPS);
   }
   function createSnake1(){
@@ -94,7 +96,7 @@ $(function(){
   function createSnake2(){
     var length = 5; //initial length of snake
     snakeArray2 = []; //start with empty array
-    for (var i=length-1; i >= 0 ; i--){
+    for (var i=length; i >= 0 ; i--){
       //creates a vertical snake moving down
       snakeArray2.push({x:20, y:i+10});
     }
@@ -200,7 +202,7 @@ $(function(){
     if(twoPlayer == true){
       for (var i=0; i < snakeArray2.length; i++){
         var c = snakeArray2[i];
-        ctx.fillStyle = 'tomato';
+        ctx.fillStyle = '#3366FF';
         rect(c.x*10, c.y*10, 10, 10);
       }
       var nx2 = snakeArray2[0].x;
@@ -266,20 +268,19 @@ $(function(){
   });
 
   //gets player 2 keyboard input
-  if(twoPlayer == true){
-    $(document).keydown(function(evt) {
-      if (evt.keyCode == 65 && direction2 != 'right'){
-        direction2 = 'left';
-      }
-      else if (evt.keyCode == 87 && direction2 != 'down'){
-        direction2 = 'up';
-      }
-      else if (evt.keyCode == 68 && direction2 != 'left'){
-        direction2 = 'right';
-      }
-      else if (evt.keyCode == 83 && direction2 != 'down'){
-        direction2 = 'down';
-      }
-    })
-  }
+  $(document).keydown(function(evt) {
+    if (evt.keyCode == 65 && direction2 != 'right'){
+      direction2 = 'left';
+      console.log("left pressed");
+    }
+    else if (evt.keyCode == 87 && direction2 != 'down'){
+      direction2 = 'up';
+    }
+    else if (evt.keyCode == 68 && direction2 != 'left'){
+      direction2 = 'right';
+    }
+    else if (evt.keyCode == 83 && direction2 != 'down'){
+      direction2 = 'down';
+    }
+  });
 }) //end of iffe

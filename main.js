@@ -15,6 +15,7 @@ $(function(){
   var snakeArray; //array of cells that make the snake
   var snakeArray2;
   var food;
+  var winner;
 
   function menu(){
     var textPos = 0;
@@ -66,7 +67,8 @@ $(function(){
         singlePlayerinit();
         clearInterval(animText);
       }
-      else if(evt.x > 320 && evt.x < 420 && evt.y > 180 && evt.y < 215){
+      else if(evt.x > 320 && evt.x < 420 && evt.y > 180 && evt.y < 215 ||
+        evt.x > 250 && evt.x < 330 && evt.y > 251 && evt.y < 270){
         twoPlayer = true;
         twoPlayerinit();
         clearInterval(animText);
@@ -166,6 +168,25 @@ $(function(){
     ctx.fillStyle = "tomato";
     ctx.fillText("Main Menu",260,240);
   }
+  function twoPlayerGameOver(){
+    if (winner == 'player1'){
+      ctx.font = "800 40px Arial";
+      ctx.fillStyle = "tomato";
+      ctx.fillText("PLAYER 1 WINS!",140,220);
+    }
+    else if (winner == 'player2'){
+      ctx.font = "800 40px Arial";
+      ctx.fillStyle = "#3366FF";
+      ctx.fillText("PLAYER 2 WINS!",140,220);
+    }
+    ctx.font = "300 15px Arial";
+    ctx.fillStyle = "tomato";
+    ctx.fillText("Main Menu",260,240);
+
+    ctx.font = "300 15px Arial";
+    ctx.fillStyle = "tomato";
+    ctx.fillText("Play Again",260,260);
+  }
   function draw(){
     clear();
 
@@ -199,16 +220,16 @@ $(function(){
       checkCollision(nx, ny, snakeArray) ||  //checks collision with itself
       snakeArray == "undefined"){
       //checkCollision(nx, ny, snakeArray2)){ //checks collision with p2
-      singlePlayerGameOver();
       console.log("DEAD");
       clearInterval(update); //stops animation
       if(twoPlayer == true){
+        winner = 'player2';
+        twoPlayerGameOver();
         p2score += 1;
         document.getElementById("p2score").innerHTML = p2score;
-        //alert('BLUE WINS!');
       }
       else {
-        //alert("DEAD");
+        singlePlayerGameOver();
       }
     }
 
@@ -271,10 +292,11 @@ $(function(){
         checkCollision(nx2, ny2, snakeArray) || //checks collision with p1
         snakeArray2 == "undefined"){ //checks if player dissapeared
         console.log("DEAD");
+        winner = 'player1';
+        twoPlayerGameOver();
         p1score += 1;
         document.getElementById("p1score").innerHTML = p1score;
         clearInterval(update); //stops animation
-        alert("RED WINS!");
       }
 
       //clear food if touching player

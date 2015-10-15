@@ -56,7 +56,11 @@ $(function(){
     ctx.fillText("SNAKE",250,textPos);
 
     canvas.addEventListener('click', function(evt){
-      if(evt.x > 190 && evt.x < 300 && evt.y > 180 && evt.y < 215 ||
+      if(evt.x > 250 && evt.x < 330 && evt.y > 231 && evt.y < 250 ){
+        menu();
+        clearInterval(animText);
+      }
+      else if(evt.x > 190 && evt.x < 300 && evt.y > 180 && evt.y < 215 ||
         evt.x > 250 && evt.x < 330 && evt.y > 210 && evt.y < 230 ){
         twoPlayer = false;
         singlePlayerinit();
@@ -75,6 +79,7 @@ $(function(){
   //runs if single player is selected in start
   function singlePlayerinit() {
     clear();
+    clearInterval(update);
     createSnake1();
     createFood();
     direction1 = 'up';
@@ -83,11 +88,12 @@ $(function(){
     document.getElementById("score").style.visibility = "visible";
     document.getElementById("p1score").style.visibility = "hidden";
     document.getElementById("p2score").style.visibility = "hidden";
-    return update = setInterval(draw, FPS);
+    update = setInterval(draw, FPS);
   }
   //runs if two player is selected in start
   function twoPlayerinit() {
     clear();
+    clearInterval(update);
     createSnake1();
     createSnake2();
     createFood();
@@ -98,7 +104,7 @@ $(function(){
     document.getElementById("score").style.visibility = "hidden";
     document.getElementById("p1score").style.visibility = "visible";
     document.getElementById("p2score").style.visibility = "visible";
-    return update = setInterval(draw, FPS);
+    update = setInterval(draw, FPS);
   }
   function createSnake1(){
     var length = 5; //initial length of snake
@@ -147,7 +153,7 @@ $(function(){
   function clear(){
     ctx.clearRect(0,0, w, h);
   }
-  function gameOver(){
+  function singlePlayerGameOver(){
     ctx.font = "800 30px Arial";
     ctx.fillStyle = "tomato";
     ctx.fillText("GAME OVER",210,200);
@@ -155,6 +161,10 @@ $(function(){
     ctx.font = "300 15px Arial";
     ctx.fillStyle = "tomato";
     ctx.fillText("Play Again",260,220);
+
+    ctx.font = "300 15px Arial";
+    ctx.fillStyle = "tomato";
+    ctx.fillText("Main Menu",260,240);
   }
   function draw(){
     clear();
@@ -189,7 +199,7 @@ $(function(){
       checkCollision(nx, ny, snakeArray) ||  //checks collision with itself
       snakeArray == "undefined"){
       //checkCollision(nx, ny, snakeArray2)){ //checks collision with p2
-      gameOver();
+      singlePlayerGameOver();
       console.log("DEAD");
       clearInterval(update); //stops animation
       if(twoPlayer == true){

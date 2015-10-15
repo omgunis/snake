@@ -6,6 +6,8 @@ $(function(){
   var FPS = 60; //snakeArray moves every update, not speed
   var speed = 1; //if speed is more than one, spaces are created between snakeArray
   var score;
+  var p1score;
+  var p2score;
   var twoPlayer = false;
   var direction1;//default direction
   var direction2;
@@ -18,6 +20,9 @@ $(function(){
   function menu(){
     var textPos = 0;
     var animText = setInterval(textAnim, 60);
+    document.getElementById("score").style.visibility = "hidden";
+    document.getElementById("p1score").style.visibility = "hidden";
+    document.getElementById("p2score").style.visibility = "hidden";
       //sexy SNAKE animation
     function textAnim(){
       clear();
@@ -71,6 +76,8 @@ $(function(){
     direction1 = 'up';
     score = 0;
     document.getElementById("score").style.visibility = "visible";
+    document.getElementById("p1score").style.visibility = "hidden";
+    document.getElementById("p2score").style.visibility = "hidden";
     return update = setInterval(draw, FPS);
   }
   //runs if two player is selected in start
@@ -81,7 +88,11 @@ $(function(){
     createFood();
     direction1 = 'up';
     direction2 = 'down';
+    p1score = 0;
+    p2score = 0;
     document.getElementById("score").style.visibility = "hidden";
+    document.getElementById("p1score").style.visibility = "visible";
+    document.getElementById("p2score").style.visibility = "visible";
     return update = setInterval(draw, FPS);
   }
   function createSnake1(){
@@ -161,10 +172,15 @@ $(function(){
 
     //game over if border is touched
     //freakin weird.... had to divide width and height by ten...
-    if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0 || checkCollision(nx, ny, snakeArray)){
+    if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0 ||
+      checkCollision(nx, ny, snakeArray) || //checks collision with itself
+      checkCollision(nx, ny, snakeArray2) || //checks collision with p2
+      snakeArray == "undefined"){ //checks if player completely shrinks
       console.log("DEAD");
       clearInterval(update); //stops animation
       if(twoPlayer == true){
+        p2score += 1;
+        document.getElementById("p2score").innerHTML = p2score;
         alert('BLUE WINS!');
       }
       else {
@@ -192,7 +208,7 @@ $(function(){
       console.log('touch');
     }
     else {
-      //x and y positions are updated every frame, but cells are not//
+      //x and y positions are updated every frame, but cells are not
       var tail = snakeArray.pop(); //pops out last cell
       tail.x = nx;
       tail.y = ny;
@@ -227,8 +243,12 @@ $(function(){
 
       //player2 collision
       if (nx2 >= w/10 || nx2 < 0 || ny2 >= h/10 || ny2 < 0 ||
-        checkCollision(nx2, ny2, snakeArray2 || snakeArray2 == "undefined")){
+        checkCollision(nx2, ny2, snakeArray2) || //checks collision with itself
+        checkCollision(nx2, ny2, snakeArray) || //checks collision with p1
+        snakeArray2 == "undefined"){ //checks if player dissapeared
         console.log("DEAD");
+        p1score += 1;
+        document.getElementById("p1score").innerHTML = p1score;
         clearInterval(update); //stops animation
         alert("RED WINS!");
       }

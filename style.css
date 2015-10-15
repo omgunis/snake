@@ -1,15 +1,29 @@
 canvas {
   background-color: lightblue;
   display: block;
-  position: relative;
 }
 
 #score {
   color: tomato;
   font-size: 24px;
   font-weight: bold;
-  margin-left: 300px;
-  margin-right: 300px;
+  margin-left: 50px;
+  margin-right: 50px;
   display: inline-block;
-  position: absolute;
+}
+#p1score {
+  color: tomato;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 180px;
+  margin-right: 50px;
+  display: inline-block;
+}
+#p2score {
+  color: #3366FF;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 50px;
+  margin-right: 50px;
+  display: inline-block;
 }

@@ -5,8 +5,7 @@ $(function(){
   var h = canvas.height;
   var FPS = 100; //snakeArray moves every update, not speed
   var speed = 1; //if speed is more than one, spaces are created between snakeArray
-  var p1score = 0;
-  var p2score = 0;
+  var score = 0;
   var twoPlayer = false;
   var direction1;//default direction
   var direction2 = 'down';
@@ -14,20 +13,39 @@ $(function(){
   var snakeArray; //array of cells that make the snake
   var snakeArray2;
   var food;
+  var textPos = 0;
 
   function start(){
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "red";
-    ctx.fillText("SNAKE",10,50);
+    var animText = setInterval(textAnim, 60);
+      //SNAKE animation
+      function textAnim(){
+        clear();
+        textPos += 10;
+        if(textPos > 150){
+          clearInterval(animText);
+        }
+        ctx.font = "800 30px Arial";
+        ctx.fillStyle = "tomato";
+        ctx.fillText("SNAKE",250,textPos);
+
+        ctx.fillStyle = "tomato";
+        var single =  new rect(200, 180, 100,25);
+
+        ctx.fillStyle = "#3366FF";
+        var double =  new rect(310, 180, 100,25);
+      }
+
     var singlePlayer = document.querySelector("#singlePlayer");
     singlePlayer.addEventListener('click', function(){
       twoPlayer = false;
       singlePlayerinit();
+      clearInterval(animText);
     });
     twoPlayer = document.querySelector("#twoPlayer");
     twoPlayer.addEventListener('click', function(){
       twoPlayer = true;
       twoPlayerinit();
+      clearInterval(animText);
     });
   }
   start();
@@ -54,8 +72,7 @@ $(function(){
     create_snake1();
     createFood();
     direction1 = 'up';
-    p1score = 0;
-    p2score = 0;
+    score = 0;
     return update = setInterval(draw, FPS);//updates screen every 10 milliseconds creating illusion of movement
   }
   //runs if two player is selected in start
@@ -64,9 +81,7 @@ $(function(){
     createFood();
     direction1 = 'up';
     direction2 = 'up';
-    p1score = 0;
-    p2score = 0;
-    return update = setInterval(draw, 1000/FPS);//updates screen every 10 milliseconds creating illusion of movement
+    return update = setInterval(draw, FPS);//updates screen every 10 milliseconds creating illusion of movement
   }
   //Creates rectangles
   function rect(x,y,w,h) {
@@ -80,7 +95,7 @@ $(function(){
     food  = {
       x: Math.round((Math.random() * w)/10) * 10, //random x position for food
       y: Math.round((Math.random() * h)/10) * 10,
-      color: "rgb(255, 255, 102)"
+      color: "#FFFF99"
     };
   }
 
@@ -132,7 +147,12 @@ $(function(){
     if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0 || checkCollision(nx, ny, snakeArray)){
       console.log("DEAD");
       clearInterval(update); //stops animation
-      alert('BLUE WINS!');
+      if(twoPlayer == true){
+        alert('BLUE WINS!');
+      }
+      else {
+        alert("OW");
+      }
     }
 
     //draw food
@@ -147,8 +167,8 @@ $(function(){
         y: ny
       }
       createFood();
-      p1score += 1;
-      document.getElementById("scorePlayer1").innerHTML = p1score;
+      score += 1;
+      document.getElementById("scorePlayer1").innerHTML = score;
       console.log('touch');
     }
     else {
@@ -173,8 +193,6 @@ $(function(){
       if(player2.x <= food.x + 10 && player2.x >= food.x - 10&&
          player2.y <= food.y + 10 && player2.y >= food.y - 10){
         createFood();
-        p2score += 1;
-        document.getElementById("scorePlayer2").innerHTML = p2score;
         console.log('touch');
       }
     }

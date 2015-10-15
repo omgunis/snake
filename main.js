@@ -75,6 +75,7 @@ $(function(){
     createFood();
     direction1 = 'up';
     score = 0;
+    document.getElementById("score").innerHTML = score;
     document.getElementById("score").style.visibility = "visible";
     document.getElementById("p1score").style.visibility = "hidden";
     document.getElementById("p2score").style.visibility = "hidden";
@@ -142,7 +143,11 @@ $(function(){
   function clear(){
     ctx.clearRect(0,0, w, h);
   }
-
+  function gameOver(){
+    ctx.font = "800 30px Arial";
+    ctx.fillStyle = "tomato";
+    ctx.fillText("GAME OVER",220,150);
+  }
   function draw(){
     clear();
 
@@ -173,18 +178,19 @@ $(function(){
     //game over if border is touched
     //freakin weird.... had to divide width and height by ten...
     if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0 ||
-      checkCollision(nx, ny, snakeArray) || //checks collision with itself
-      checkCollision(nx, ny, snakeArray2) || //checks collision with p2
-      snakeArray == "undefined"){ //checks if player completely shrinks
+      checkCollision(nx, ny, snakeArray) ||  //checks collision with itself
+      snakeArray == "undefined"){
+      //checkCollision(nx, ny, snakeArray2)){ //checks collision with p2
+      gameOver();
       console.log("DEAD");
       clearInterval(update); //stops animation
       if(twoPlayer == true){
         p2score += 1;
         document.getElementById("p2score").innerHTML = p2score;
-        alert('BLUE WINS!');
+        //alert('BLUE WINS!');
       }
       else {
-        alert("DEAD");
+        //alert("DEAD");
       }
     }
 

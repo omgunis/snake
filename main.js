@@ -35,18 +35,26 @@ $(function(){
         var double =  new rect(310, 180, 100,25);
       }
 
-    var singlePlayer = document.querySelector("#singlePlayer");
-    singlePlayer.addEventListener('click', function(){
-      twoPlayer = false;
-      singlePlayerinit();
-      clearInterval(animText);
+
+    //var singlePlayer = document.querySelector("#singlePlayer");
+    canvas.addEventListener('click', function(evt){
+      if(evt.x > 190 && evt.x < 300 && evt.y > 180 && evt.y < 215){
+        twoPlayer = false;
+        singlePlayerinit();
+        clearInterval(animText);
+      }
+      else if(evt.x > 320 && evt.x < 420 && evt.y > 180 && evt.y < 215){
+        twoPlayer = true;
+        twoPlayerinit();
+        clearInterval(animText);
+      }
     });
-    twoPlayer = document.querySelector("#twoPlayer");
-    twoPlayer.addEventListener('click', function(){
-      twoPlayer = true;
-      twoPlayerinit();
-      clearInterval(animText);
-    });
+    // twoPlayer = document.querySelector("#twoPlayer");
+    // twoPlayer.addEventListener('click', function(){
+    //   twoPlayer = true;
+    //   twoPlayerinit();
+    //   clearInterval(animText);
+    // });
   }
   start();
   function create_snake1(){
@@ -151,7 +159,7 @@ $(function(){
         alert('BLUE WINS!');
       }
       else {
-        alert("OW");
+        alert("DEAD");
       }
     }
 
@@ -168,7 +176,7 @@ $(function(){
       }
       createFood();
       score += 1;
-      document.getElementById("scorePlayer1").innerHTML = score;
+      document.getElementById("score").innerHTML = score;
       console.log('touch');
     }
     else {

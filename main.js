@@ -6,8 +6,8 @@ $(function(){
   var FPS = 60; //snakeArray moves every update, not speed
   var speed = 1; //if speed is more than one, spaces are created between snakeArray
   var score;
-  var p1score;
-  var p2score;
+  var p1score = 0;
+  var p2score = 0;
   var twoPlayer = false;
   var direction1;//default direction
   var direction2;
@@ -101,8 +101,6 @@ $(function(){
     createFood();
     direction1 = 'up';
     direction2 = 'down';
-    p1score = 0;
-    p2score = 0;
     document.getElementById("score").style.visibility = "hidden";
     document.getElementById("p1score").style.visibility = "visible";
     document.getElementById("p2score").style.visibility = "visible";
@@ -244,10 +242,10 @@ $(function(){
         x: nx,
         y: ny
       }
+      createFood();
       if(twoPlayer == true){
         snakeArray2.pop();
       }
-      createFood();
       score += 1;
       document.getElementById("score").innerHTML = score;
       console.log('touch');

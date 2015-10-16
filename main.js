@@ -197,6 +197,8 @@ $(function(){
 
     var nx = snakeArray[0].x;
     var ny = snakeArray[0].y;
+    var nnx = snakeArray[1].x;
+    var nny = snakeArray[1].y;
 
     //snake direction
     if (direction1 == 'left') {
@@ -244,6 +246,11 @@ $(function(){
       }
       createFood();
       if(twoPlayer == true){
+        var doubleTail = {
+          x: nnx,
+          y: nny
+        }
+        snakeArray.unshift(doubleTail);
         snakeArray2.pop();
       }
       score += 1;
@@ -252,12 +259,15 @@ $(function(){
     }
     else {
       //x and y positions are updated every frame, but cells are not
-      var tail = snakeArray.pop(); //pops out last cell
+      //can aslo do snakeArray.pop();
+      var tail = snakeArray.splice(snakeArray.length-1,1); //pops out last cell
       tail.x = nx;
       tail.y = ny;
     }
 
-    snakeArray.unshift(tail); //puts cell back in the front
+    snakeArray.unshift(tail);
+
+     //puts cell back in the front
     //tail becomes new head every frame
 
     //draw Player 2
@@ -269,6 +279,8 @@ $(function(){
       }
       var nx2 = snakeArray2[0].x;
       var ny2 = snakeArray2[0].y;
+      var nnx2 = snakeArray2[1].x;
+      var nny2 = snakeArray2[1].y;
 
       //player 2 movement
       if (direction2 == 'left') {
@@ -287,7 +299,6 @@ $(function(){
       //player2 collision
       if (nx2 >= w/10 || nx2 < 0 || ny2 >= h/10 || ny2 < 0 ||
         checkCollision(nx2, ny2, snakeArray2) || //checks collision with itself
-        checkCollision(nx2, ny2, snakeArray) || //checks collision with p1
         snakeArray2 == "undefined"){ //checks if player dissapeared
         console.log("DEAD");
         winner = 'player1';
@@ -304,6 +315,11 @@ $(function(){
           x: nx2,
           y: ny2
         }
+        var doubleTail2 = {
+          x: nnx2,
+          y: nny2
+        }
+        snakeArray2.unshift(doubleTail2);
         snakeArray.pop();
         createFood();
         console.log('touch');

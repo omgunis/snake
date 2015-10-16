@@ -197,8 +197,6 @@ $(function(){
 
     var nx = snakeArray[0].x;
     var ny = snakeArray[0].y;
-    var nnx = snakeArray[1].x;
-    var nny = snakeArray[1].y;
 
     //snake direction
     if (direction1 == 'left') {
@@ -217,8 +215,7 @@ $(function(){
     //game over if border is touched
     //freakin weird.... had to divide width and height by ten...
     if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0 ||
-      checkCollision(nx, ny, snakeArray) ||  //checks collision with itself
-      snakeArray == "undefined"){
+      checkCollision(nx, ny, snakeArray) || nnx == 'undefined'){ //checks collision with itself
       //checkCollision(nx, ny, snakeArray2)){ //checks collision with p2
       console.log("DEAD");
       clearInterval(update); //stops animation
@@ -246,6 +243,8 @@ $(function(){
       }
       createFood();
       if(twoPlayer == true){
+        var nnx = snakeArray[1].x;
+        var nny = snakeArray[1].y;
         var doubleTail = {
           x: nnx,
           y: nny
@@ -279,8 +278,7 @@ $(function(){
       }
       var nx2 = snakeArray2[0].x;
       var ny2 = snakeArray2[0].y;
-      var nnx2 = snakeArray2[1].x;
-      var nny2 = snakeArray2[1].y;
+
 
       //player 2 movement
       if (direction2 == 'left') {
@@ -298,8 +296,8 @@ $(function(){
 
       //player2 collision
       if (nx2 >= w/10 || nx2 < 0 || ny2 >= h/10 || ny2 < 0 ||
-        checkCollision(nx2, ny2, snakeArray2) || //checks collision with itself
-        snakeArray2 == "undefined"){ //checks if player dissapeared
+        checkCollision(nx2, ny2, snakeArray2) || nnx2 == 'undefined'){ //checks collision with itself
+        //checks if player dissapeared
         console.log("DEAD");
         winner = 'player1';
         twoPlayerGameOver();
@@ -315,12 +313,14 @@ $(function(){
           x: nx2,
           y: ny2
         }
+        var nnx2 = snakeArray2[1].x;
+        var nny2 = snakeArray2[1].y;
         var doubleTail2 = {
           x: nnx2,
           y: nny2
         }
-        snakeArray2.unshift(doubleTail2);
         snakeArray.pop();
+        snakeArray2.unshift(doubleTail2);
         createFood();
         console.log('touch');
       }

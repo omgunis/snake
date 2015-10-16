@@ -215,7 +215,7 @@ $(function(){
     //game over if border is touched
     //freakin weird.... had to divide width and height by ten...
     if (nx >= w/10 || nx < 0 || ny >= h/10 || ny < 0 ||
-      checkCollision(nx, ny, snakeArray) || nnx == 'undefined'){ //checks collision with itself
+      checkCollision(nx, ny, snakeArray) || snakeArray == 'undefined'){ //checks collision with itself
       //checkCollision(nx, ny, snakeArray2)){ //checks collision with p2
       console.log("DEAD");
       clearInterval(update); //stops animation
@@ -276,6 +276,14 @@ $(function(){
         ctx.fillStyle = '#3366FF';
         rect(c.x*10, c.y*10, 10, 10);
       }
+      
+      // conditional return
+      if (!snakeArray2 || !snakeArray2[0] ){
+        twoPlayerGameOver();
+        clearInterval(draw);
+        return
+      }
+
       var nx2 = snakeArray2[0].x;
       var ny2 = snakeArray2[0].y;
 
@@ -296,7 +304,7 @@ $(function(){
 
       //player2 collision
       if (nx2 >= w/10 || nx2 < 0 || ny2 >= h/10 || ny2 < 0 ||
-        checkCollision(nx2, ny2, snakeArray2) || nnx2 == 'undefined'){ //checks collision with itself
+        checkCollision(nx2, ny2, snakeArray2) || snakeArray2 == 'undefined'){ //checks collision with itself
         //checks if player dissapeared
         console.log("DEAD");
         winner = 'player1';

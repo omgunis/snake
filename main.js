@@ -276,9 +276,9 @@ $(function(){
         ctx.fillStyle = '#3366FF';
         rect(c.x*10, c.y*10, 10, 10);
       }
-      
+
       // conditional return
-      if (!snakeArray2 || !snakeArray2[0] ){
+      if (!snakeArray2 || !snakeArray2[0] || !snakeArray || !snakeArray[0]){
         twoPlayerGameOver();
         clearInterval(draw);
         return

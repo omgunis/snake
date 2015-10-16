@@ -278,7 +278,7 @@ $(function(){
       }
 
       // conditional return
-      if (!snakeArray2 || !snakeArray2[0] || !snakeArray || !snakeArray[0]){
+      if (!snakeArray2 || !snakeArray2[0]){
         twoPlayerGameOver();
         clearInterval(draw);
         return

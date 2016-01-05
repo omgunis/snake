@@ -1,0 +1,26 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "This a snake game made in javascript",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omgunis/snake.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omgunis/snake/issues"
+  },
+  "homepage": "https://github.com/omgunis/snake#readme",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.3",
+    "morgan": "^1.6.1",
+    "path": "^0.12.7"
+  }
+}

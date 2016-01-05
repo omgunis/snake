@@ -1,5 +1,5 @@
 #Snake
-A twist on a classic game
+<h2>A fun twist on a classic game</h2>
 <img src="http://i.imgur.com/IYJd2BG.png?1"/>
 
 Click <a href="http://eunice-snake.herokuapp.com/" target="_blank">here</a> to play!

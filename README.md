@@ -14,7 +14,7 @@
 <p>When a player collects food, they grow by 2 and oppenent shrinks by 1</p>
 <p>Try your best to shrink your oppenent into oblivion</p>
 
-Click <a href="http://eunice-snake.herokuapp.com/" target="_blank">here</a> to play!
+<h3>Click <a href="http://eunice-snake.herokuapp.com/" target="_blank">here</a> to play!</h3>
 
 #Technologies Used
 <ul>

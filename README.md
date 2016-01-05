@@ -5,10 +5,12 @@
 
 #Instructions
 <h3>Single Player</h3>
+<img src="http://i.imgur.com/OTHXmK5.png"/>
 <p>Use arrow keys to move and collect food</p>
 <p>Don't touch the edges or run into yourself</p>
 <p>Try your best to beat the high score</p>
 <h3>Two Player</h3>
+<img src="http://i.imgur.com/yV6xDiq.png"/>
 <p>Use WASD keys and arrow keys to collect food</p>
 <p>Don't touch edges or run into yourself</p>
 <p>When a player collects food, they grow by 2 and oppenent shrinks by 1</p>
